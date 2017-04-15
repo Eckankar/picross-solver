@@ -1,13 +1,19 @@
 {-# LANGUAGE OverloadedStrings #-}
 
 import Control.Applicative ((<$>))
+import Data.List (transpose)
 import qualified Data.Text as T
 import Debug.Trace (traceShowM)
 import System.Environment (getArgs)
 
 type Hints = [Int]
 data Field = Unknown | Empty | Marked
-    deriving (Show, Eq)
+    deriving (Eq)
+
+instance Show Field where
+    show Unknown = " "
+    show Empty   = "."
+    show Marked  = "#"
 
 data Board = Board { xhints :: [Hints]
                    , yhints :: [Hints]
@@ -15,7 +21,32 @@ data Board = Board { xhints :: [Hints]
                    , xdim   :: Int
                    , ydim   :: Int
                    }
-        deriving (Show, Eq)
+        deriving (Eq)
+
+instance Show Board where
+    show b = unlines $ alignRight $
+                map (++" ") xh ++
+                zipWith (++) ("" : yh ++ [""]) flines
+        where formatHints :: Hints -> String
+              formatHints = unwords . map show
+
+              padLeft n s = replicate d ' ' ++ s
+                where d = n - length s
+
+              alignRight :: [String] -> [String]
+              alignRight ss = map (padLeft ml) ss
+                where ml = maximum $ map length ss
+
+              blines = map (concatMap show) $ fields b
+              flines = ["┌" ++ replicate (xdim b) '─' ++ "┐"] ++
+                       map (\l -> "│" ++ l ++ "│") blines ++
+                       ["└" ++ replicate (xdim b) '─' ++ "┘"]
+
+              yh :: [String]
+              yh = alignRight $ map formatHints $ yhints b
+
+              xh :: [String]
+              xh = transpose $ alignRight $ map formatHints $ xhints b
 
 loadFile :: FilePath -> IO Board
 loadFile fileName = do ls <- lines <$> readFile fileName
