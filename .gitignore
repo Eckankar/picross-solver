@@ -1,6 +1,7 @@
 dist
 dist-*
 cabal-dev
+picross
 *.o
 *.hi
 *.chi
