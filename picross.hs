@@ -1,5 +1,3 @@
-{-# LANGUAGE OverloadedStrings #-}
-
 import Control.Applicative ((<$>))
 import Control.Monad (unless)
 import Data.List (transpose)
