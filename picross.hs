@@ -5,6 +5,9 @@ import qualified Data.Text as T
 import Debug.Trace (traceShowM)
 import System.Environment (getArgs)
 
+-- Picross solver implemented in Haskell
+-- Sell examples directory for examples of input
+
 type Hints = [Int]
 data Field = Unknown | Empty | Marked
     deriving (Eq)
