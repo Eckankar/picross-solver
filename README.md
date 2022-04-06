@@ -1,7 +1,7 @@
 Picross solver in Haskell
 =========================
 
-A simple picross solver implemented in Haskell.
+A simple picross solver implemented in Haskell. Supports both picross, as well as mega picross.
 
 Requires GHC to compile.
 
